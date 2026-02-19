@@ -1,35 +1,56 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from "react";
+import { FileSelector } from "./components/file-selector";
+import "./App.css";
+
+import { convertImageTo } from "./converters/image";
+import { downloadFile } from "./utils";
+
+const SUPPORTED_FORMATS = [
+	{ visual: "PNG", mime: "image/png", extension: "png" },
+	{ visual: "JPEG", mime: "image/jpeg", extension: "jpg" },
+	{ visual: "WEBP", mime: "image/webp", extension: "webp" },
+];
 
 function App() {
-  const [count, setCount] = useState(0)
+	const [file, setFile] = useState<Blob | null>(null);
+	const [selectedFormat, setSelectedFormat] = useState(SUPPORTED_FORMATS[0]);
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+	const tryConvert = async () => {
+		if (!file) return;
+		const url = await convertImageTo(file, selectedFormat.mime);
+
+		downloadFile(url, `loconv-${Date.now()}.${selectedFormat.extension}`);
+		setTimeout(() => URL.revokeObjectURL(url), 1000);
+	};
+
+	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const selectedFile = e.target.files?.[0];
+
+		if (selectedFile) {
+			setFile(selectedFile);
+		}
+	}
+
+	return (
+		<div>
+			<FileSelector
+				accept="image/*"
+				handleFileChange={handleFileChange}
+			/>
+			<select
+				onChange={(e) =>
+					setSelectedFormat(SUPPORTED_FORMATS[parseInt(e.target.value)])
+				}
+			>
+				{SUPPORTED_FORMATS.map((format, index) => (
+					<option key={format.extension} value={index}>
+						{format.visual}
+					</option>
+				))}
+			</select>
+			<button onClick={tryConvert}>Convert</button>
+		</div>
+	);
 }
 
-export default App
+export default App;
