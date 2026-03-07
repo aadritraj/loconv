@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FileSelector } from "./components/file-selector";
 import "./App.css";
 
-import { convertImageTo } from "./converters/image";
+import { drawImageCanvas, convertCanvasToBlob } from "./converters/image";
 import { downloadFile } from "./utils";
 
 const SUPPORTED_FORMATS = [
@@ -14,41 +14,50 @@ const SUPPORTED_FORMATS = [
 function App() {
 	const [file, setFile] = useState<Blob | null>(null);
 	const [selectedFormat, setSelectedFormat] = useState(SUPPORTED_FORMATS[0]);
+	const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
 
 	const tryConvert = async () => {
 		if (!file) return;
-		const url = await convertImageTo(file, selectedFormat.mime);
+		if (!canvasRef.current) return;
 
-		downloadFile(url, `loconv-${Date.now()}.${selectedFormat.extension}`);
-		setTimeout(() => URL.revokeObjectURL(url), 1000);
+		await drawImageCanvas(file, selectedFormat.mime, canvasRef.current);
+		const dataUrl = await convertCanvasToBlob(canvasRef.current, selectedFormat.mime);
+
+		downloadFile(dataUrl, `loconv-${Date.now()}.${selectedFormat.extension}`);
+		setTimeout(() => URL.revokeObjectURL(dataUrl), 1000);
 	};
 
-	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
 		const selectedFile = e.target.files?.[0];
 
-		if (selectedFile) {
-			setFile(selectedFile);
-		}
+		if (!selectedFile) return;
+		setFile(selectedFile);
+
+		if (!canvasRef.current) return;
+		await drawImageCanvas(selectedFile, selectedFormat.mime, canvasRef.current);
 	}
 
 	return (
 		<div>
-			<FileSelector
-				accept="image/*"
-				handleFileChange={handleFileChange}
-			/>
-			<select
-				onChange={(e) =>
-					setSelectedFormat(SUPPORTED_FORMATS[parseInt(e.target.value)])
-				}
-			>
-				{SUPPORTED_FORMATS.map((format, index) => (
-					<option key={format.extension} value={index}>
-						{format.visual}
-					</option>
-				))}
-			</select>
-			<button onClick={tryConvert}>Convert</button>
+			<div>
+				<FileSelector
+					accept="image/*"
+					handleFileChange={handleFileChange}
+				/>
+				<select
+					onChange={(e) =>
+						setSelectedFormat(SUPPORTED_FORMATS[parseInt(e.target.value)])
+					}
+				>
+					{SUPPORTED_FORMATS.map((format, index) => (
+						<option key={format.extension} value={index}>
+							{format.visual}
+						</option>
+					))}
+				</select>
+				<button onClick={tryConvert}>Convert</button>
+			</div>
+			<canvas ref={canvasRef}></canvas>
 		</div>
 	);
 }

@@ -1,4 +1,4 @@
-export const convertImageTo = (file: Blob, mime: string): Promise<string> => {
+export const drawImageCanvas = (file: Blob, targetMime: string, canvas: HTMLCanvasElement): Promise<void> => {
 	return new Promise((resolve, reject) => {
 		const fileReader = new FileReader();
 
@@ -12,7 +12,6 @@ export const convertImageTo = (file: Blob, mime: string): Promise<string> => {
 			img.src = e.target.result;
 
 			img.onload = () => {
-				const canvas = document.createElement("canvas");
 				const ctx = canvas.getContext("2d");
 
 				if (!ctx) {
@@ -23,22 +22,13 @@ export const convertImageTo = (file: Blob, mime: string): Promise<string> => {
 				canvas.width = img.width;
 				canvas.height = img.height;
 
-				if (mime === "image/jpeg") {
+				if (targetMime === "image/jpeg") {
 					ctx.fillStyle = "#FFFFFF";
 					ctx.fillRect(0, 0, canvas.width, canvas.height);
 				}
 
 				ctx.drawImage(img, 0, 0);
-
-				canvas.toBlob((blob) => {
-					if (!blob) {
-						reject(new Error("Blob creation failed"));
-						return;
-					}
-					const url = URL.createObjectURL(blob);
-
-					resolve(url);
-				}, mime, 1);
+				resolve();
 			};
 
 			img.onerror = () => reject(new Error("Image loading failed"));
@@ -47,4 +37,17 @@ export const convertImageTo = (file: Blob, mime: string): Promise<string> => {
 		fileReader.onerror = () => reject(new Error("File reading failed"));
 		fileReader.readAsDataURL(file);
 	});
-};
+}
+
+export const convertCanvasToBlob = (canvas: HTMLCanvasElement, targetMime: string): Promise<string> => {
+	return new Promise((resolve, reject) => {
+		canvas.toBlob((blob) => {
+			if (!blob) {
+				reject(new Error("Blob creation failed"));;
+				return;
+			}
+
+			resolve(URL.createObjectURL(blob))
+		}, targetMime, 1)
+	})
+}
