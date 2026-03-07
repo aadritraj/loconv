@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FileSelector } from "./components/file-selector";
 import "./App.css";
 
-import { drawImageCanvas, convertCanvasToBlob } from "./converters/image";
+import { makeImage, drawImageCanvas, convertCanvasToBlob } from "./converters/image";
 import { downloadFile } from "./utils";
 
 const SUPPORTED_FORMATS = [
@@ -20,7 +20,6 @@ function App() {
 		if (!file) return;
 		if (!canvasRef.current) return;
 
-		await drawImageCanvas(file, selectedFormat.mime, canvasRef.current);
 		const dataUrl = await convertCanvasToBlob(canvasRef.current, selectedFormat.mime);
 
 		downloadFile(dataUrl, `loconv-${Date.now()}.${selectedFormat.extension}`);
@@ -29,13 +28,24 @@ function App() {
 
 	const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
 		const selectedFile = e.target.files?.[0];
+		if (!selectedFile || !canvasRef.current) return;
 
-		if (!selectedFile) return;
 		setFile(selectedFile);
 
-		if (!canvasRef.current) return;
-		await drawImageCanvas(selectedFile, selectedFormat.mime, canvasRef.current);
-	}
+		try {
+			const img = await makeImage(selectedFile);
+
+			const canvas = canvasRef.current;
+			if (!canvas) return;
+
+			canvas.width = img.naturalWidth;
+			canvas.height = img.naturalHeight;
+			
+			drawImageCanvas(img, selectedFormat.mime, canvasRef.current);
+		} catch (err) {
+			console.error("Failed to process image:", err);
+		}
+	};
 
 	return (
 		<div>
