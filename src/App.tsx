@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FileSelector } from "./components/file-selector";
 import "./App.css";
 
@@ -54,6 +54,23 @@ function App() {
 		}
 	};
 
+	// Load in placeholder image
+	useEffect(() => {
+		const drawPlaceholderImage = async () => {
+			// This seems like a hack but I have no idea what else to do 
+			const imageData = await fetch("/public/placeholder.png");
+			const placeholderImage = await makeImage(await imageData.blob());
+
+			await drawImageCanvas(
+				placeholderImage,
+				SUPPORTED_FORMATS[0].mime, // Placeholder is a PNG
+				canvasRef.current as HTMLCanvasElement
+			);
+		}
+
+		drawPlaceholderImage();
+	}, [])
+
 	return (
 		<div className="container">
 			<h1 className="text-center">loconv</h1>
@@ -82,6 +99,7 @@ function App() {
 					Convert
 				</button>
 			</div>
+			<p>Image preview</p>
 			<canvas ref={canvasRef} className="panel canvas"></canvas>
 		</div>
 	);
