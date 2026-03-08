@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import { FileSelector } from "./components/file-selector";
 import "./App.css";
 
-import { makeImage, drawImageCanvas, convertCanvasToBlob } from "./converters/image";
+import {
+	makeImage,
+	drawImageCanvas,
+	convertCanvasToBlob,
+} from "./converters/image";
 import { downloadFile } from "./utils";
 
 const SUPPORTED_FORMATS = [
@@ -20,7 +24,10 @@ function App() {
 		if (!file) return;
 		if (!canvasRef.current) return;
 
-		const dataUrl = await convertCanvasToBlob(canvasRef.current, selectedFormat.mime);
+		const dataUrl = await convertCanvasToBlob(
+			canvasRef.current,
+			selectedFormat.mime,
+		);
 
 		downloadFile(dataUrl, `loconv-${Date.now()}.${selectedFormat.extension}`);
 		setTimeout(() => URL.revokeObjectURL(dataUrl), 1000);
@@ -40,7 +47,7 @@ function App() {
 
 			canvas.width = img.naturalWidth;
 			canvas.height = img.naturalHeight;
-			
+
 			drawImageCanvas(img, selectedFormat.mime, canvasRef.current);
 		} catch (err) {
 			console.error("Failed to process image:", err);
@@ -48,16 +55,22 @@ function App() {
 	};
 
 	return (
-		<div>
-			<div>
+		<div className="container">
+			<h1 className="text-center">loconv</h1>
+			<p className="text-center">
+				Small lightweight fully local image conversion
+			</p>
+			<div className="panel">
 				<FileSelector
 					accept="image/*"
 					handleFileChange={handleFileChange}
+					className="btn btn-secondary"
 				/>
 				<select
 					onChange={(e) =>
 						setSelectedFormat(SUPPORTED_FORMATS[parseInt(e.target.value)])
 					}
+					className="select-input"
 				>
 					{SUPPORTED_FORMATS.map((format, index) => (
 						<option key={format.extension} value={index}>
@@ -65,9 +78,11 @@ function App() {
 						</option>
 					))}
 				</select>
-				<button onClick={tryConvert}>Convert</button>
+				<button onClick={tryConvert} className="btn btn-primary">
+					Convert
+				</button>
 			</div>
-			<canvas ref={canvasRef}></canvas>
+			<canvas ref={canvasRef} className="panel canvas"></canvas>
 		</div>
 	);
 }

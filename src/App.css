@@ -1,10 +1,139 @@
+:root {
+	/* Base colours (Catpuccin Mocha)*/
+	--base-bg-color: #1e1e2e;
+	--secondary-bg-color: #181825;
+	--secondary-bg-color-dimmed: #11111b;
+	--surface-color: #585b70;
+	--surface-color-dimmed: #45475a;
+	--color-blue: #89b4fa;
+	--color-text: #cdd6f4;
+	--color-subtext: #bac2de;
+}
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
 #root {
-	max-width: 1280px;
-	margin: 0 auto;
-	padding: 2rem;
-	text-align: center;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+body {
+	background-color: var(--base-bg-color);
+	color: var(--color-text);
+	font-family: "Inter", sans-serif;
+	height: 100dvh;
+	width: 100vw;
+}
+
+.container {
+	display: flex;
+	gap: 1rem;
+	height: 100vh;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.panel {
+	background-color: var(--secondary-bg-color);
+	border-radius: 10px;
+	padding: 1rem;
+	max-width: 80%;
+
+	max-width: 95%;
+	max-height: 95%;
+
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	gap: 1rem;
+}
+
+.canvas {
+	border: 1px solid var(--surface-color);
+	border-radius: 10px;
+	flex-shrink: 0;
+
+	max-width: 75vw;
+	max-height: 75vh;
+	aspect-ratio: 1 / 1;
+	object-fit: contain;
+}
+
+.btn {
+	padding: 0.6rem 1.2rem;
+	border: none;
+	border-radius: 5px;
+	font-weight: 600;
+	cursor: pointer;
+}
+
+.btn:active {
+	transform: scale(0.95);
+}
+
+.btn-primary {
+	background-color: var(--color-blue);
+	color: var(--base-bg-color);
+	border: 1px solid var(--surface-color);
+	border-radius: 6px;
+}
+
+.btn-secondary {
+	background-color: var(--secondary-bg-color-dimmed);
+	color: var(--color-text);
+	border: 1px solid var(--surface-color);
+	border-radius: 6px;
+}
+
+.btn-secondary:hover {
+	border-color: var(--color-blue);
+}
+
+.select-input {
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+
+	padding: 0.6rem 1.2rem;
+	font-family: inherit;
+	font-size: 0.9rem;
+	cursor: pointer;
+
+	background-color: var(--secondary-bg-color-dimmed);
+	color: var(--color-text);
+	border: 1px solid var(--surface-color);
+
+	border-radius: 6px;
+	background-image: url("./assets/chevron-down.svg");
+	background-repeat: no-repeat;
+	background-position: right 0.7rem center;
+	background-size: 1rem;
+}
+
+.select-input:hover {
+	border-color: var(--color-blue);
+}
+
+.select-input:focus {
+	outline: none;
+	border-color: var(--color-blue);
+}
+
+.select-input option {
+	background-color: var(--secondary-bg-color);
+	color: var(--color-text);
 }
 
 .hidden {
 	display: none;
+}
+
+.text-center {
+	text-align: center;
 }

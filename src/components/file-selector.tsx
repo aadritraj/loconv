@@ -1,6 +1,14 @@
 import { useRef } from "react";
 
-export function FileSelector({ accept, handleFileChange }: { accept: string, handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => any;}) {
+export function FileSelector({
+	accept,
+	handleFileChange,
+	className,
+}: {
+	accept: string;
+	handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => any;
+	className: string;
+}) {
 	const fileInputRef = useRef<HTMLInputElement>(null);
 
 	const spawnSelector = () => {
@@ -16,7 +24,9 @@ export function FileSelector({ accept, handleFileChange }: { accept: string, han
 				className="hidden"
 				onChange={handleFileChange}
 			/>
-			<button onClick={spawnSelector}>Select File</button>
+			<button onClick={spawnSelector} className={className}>
+				Select File
+			</button>
 		</div>
 	);
 }

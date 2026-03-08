@@ -1,22 +1,26 @@
 export const makeImage = (file: Blob): Promise<HTMLImageElement> => {
 	return new Promise((resolve, reject) => {
 		const url = URL.createObjectURL(file);
-        const img = new Image();
-        
-        img.onload = () => {
-            URL.revokeObjectURL(url);
-            resolve(img);
-        };
-        img.onerror = () => {
-            URL.revokeObjectURL(url);
-            reject(new Error("Image loading failed"));
-        };
-        
-        img.src = url;
-	})
-}
+		const img = new Image();
 
-export const drawImageCanvas = (img: HTMLImageElement, targetMime: string, canvas: HTMLCanvasElement): Promise<void> => {
+		img.onload = () => {
+			URL.revokeObjectURL(url);
+			resolve(img);
+		};
+		img.onerror = () => {
+			URL.revokeObjectURL(url);
+			reject(new Error("Image loading failed"));
+		};
+
+		img.src = url;
+	});
+};
+
+export const drawImageCanvas = (
+	img: HTMLImageElement,
+	targetMime: string,
+	canvas: HTMLCanvasElement,
+): Promise<void> => {
 	return new Promise((resolve, reject) => {
 		const ctx = canvas.getContext("2d");
 		if (!ctx) {
@@ -34,18 +38,25 @@ export const drawImageCanvas = (img: HTMLImageElement, targetMime: string, canva
 
 		ctx.drawImage(img, 0, 0);
 		resolve();
-	})
-}
+	});
+};
 
-export const convertCanvasToBlob = (canvas: HTMLCanvasElement, targetMime: string): Promise<string> => {
+export const convertCanvasToBlob = (
+	canvas: HTMLCanvasElement,
+	targetMime: string,
+): Promise<string> => {
 	return new Promise((resolve, reject) => {
-		canvas.toBlob((blob) => {
-			if (!blob) {
-				reject(new Error("Blob creation failed"));;
-				return;
-			}
+		canvas.toBlob(
+			(blob) => {
+				if (!blob) {
+					reject(new Error("Blob creation failed"));
+					return;
+				}
 
-			resolve(URL.createObjectURL(blob))
-		}, targetMime, 1)
-	})
-}
+				resolve(URL.createObjectURL(blob));
+			},
+			targetMime,
+			1,
+		);
+	});
+};
