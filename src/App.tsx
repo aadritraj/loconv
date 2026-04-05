@@ -8,6 +8,7 @@ import {
 	convertCanvasToBlob,
 } from "./converters/image";
 import { downloadFile } from "./utils";
+import { Footer } from "./components/footer";
 
 const SUPPORTED_FORMATS = [
 	{ visual: "PNG", mime: "image/png", extension: "png" },
@@ -58,7 +59,7 @@ function App() {
 	useEffect(() => {
 		const drawPlaceholderImage = async () => {
 			// This seems like a hack but I have no idea what else to do 
-			const imageData = await fetch("/public/placeholder.png");
+			const imageData = await fetch("/placeholder.png");
 			const placeholderImage = await makeImage(await imageData.blob());
 
 			await drawImageCanvas(
@@ -72,35 +73,38 @@ function App() {
 	}, [])
 
 	return (
-		<div className="container">
-			<h1 className="text-center">loconv</h1>
-			<p className="text-center">
-				Small lightweight fully local image conversion
-			</p>
-			<div className="panel">
-				<FileSelector
-					accept="image/*"
-					handleFileChange={handleFileChange}
-					className="btn btn-secondary"
-				/>
-				<select
-					onChange={(e) =>
-						setSelectedFormat(SUPPORTED_FORMATS[parseInt(e.target.value)])
-					}
-					className="select-input"
-				>
-					{SUPPORTED_FORMATS.map((format, index) => (
-						<option key={format.extension} value={index}>
-							{format.visual}
-						</option>
-					))}
-				</select>
-				<button onClick={tryConvert} className="btn btn-primary">
-					Convert
-				</button>
+		<div className="app">
+			<div className="container">
+				<h1 className="text-center">loconv</h1>
+				<p className="text-center">
+					Small lightweight fully local image conversion
+				</p>
+				<div className="panel">
+					<FileSelector
+						accept="image/*"
+						handleFileChange={handleFileChange}
+						className="btn btn-secondary"
+					/>
+					<select
+						onChange={(e) =>
+							setSelectedFormat(SUPPORTED_FORMATS[parseInt(e.target.value)])
+						}
+						className="select-input"
+					>
+						{SUPPORTED_FORMATS.map((format, index) => (
+							<option key={format.extension} value={index}>
+								{format.visual}
+							</option>
+						))}
+					</select>
+					<button onClick={tryConvert} className="btn btn-primary">
+						Convert
+					</button>
+				</div>
+				<p>Image preview</p>
+				<canvas ref={canvasRef} className="canvas"></canvas>
 			</div>
-			<p>Image preview</p>
-			<canvas ref={canvasRef} className="panel canvas"></canvas>
+			<Footer />
 		</div>
 	);
 }
