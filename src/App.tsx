@@ -58,19 +58,19 @@ function App() {
 	// Load in placeholder image
 	useEffect(() => {
 		const drawPlaceholderImage = async () => {
-			// This seems like a hack but I have no idea what else to do 
+			// This seems like a hack but I have no idea what else to do
 			const imageData = await fetch("/placeholder.png");
 			const placeholderImage = await makeImage(await imageData.blob());
 
 			await drawImageCanvas(
 				placeholderImage,
 				SUPPORTED_FORMATS[0].mime, // Placeholder is a PNG
-				canvasRef.current as HTMLCanvasElement
+				canvasRef.current as HTMLCanvasElement,
 			);
-		}
+		};
 
 		drawPlaceholderImage();
-	}, [])
+	}, []);
 
 	return (
 		<div className="app">
