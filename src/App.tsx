@@ -7,7 +7,7 @@ import {
 	drawImageCanvas,
 	convertCanvasToBlob,
 } from "./converters/image";
-import { downloadFile } from "./utils";
+import { downloadFile, getPublicResource } from "./utils";
 import { Footer } from "./components/footer";
 
 const SUPPORTED_FORMATS = [
@@ -59,7 +59,7 @@ function App() {
 	useEffect(() => {
 		const drawPlaceholderImage = async () => {
 			// This seems like a hack but I have no idea what else to do
-			const imageData = await fetch("/placeholder.png");
+			const imageData = await fetch(getPublicResource("/placeholder.png"));
 			const placeholderImage = await makeImage(await imageData.blob());
 
 			await drawImageCanvas(
