@@ -1,3 +1,5 @@
+import { ExternalLink } from "./external-link";
+
 const GH_SOURCE = "https://github.com/aadritraj/loconv";
 // attribution for placeholder image
 const IMAGE_ATTRIBUTION = "https://unsplash.com/@patrickian4";
@@ -8,20 +10,14 @@ export function Footer() {
 			<b>
 				<h2>loconv</h2>
 			</b>
-			<p>distributed under the MIT license</p>
-			<p>
-				source available{" "}
-				<a href={GH_SOURCE} target="_blank" rel="noopener noreferrer">
-					here
-				</a>
-			</p>
-			<p>
-				placeholder photograph by{" "}
-				<a href={IMAGE_ATTRIBUTION} target="_blank" rel="noopener noreferrer">
-					Patrick Fore
-				</a>{" "}
-				licensed under the Unsplash license
-			</p>
+			<section>
+				<p>distributed under the MIT license</p>
+				<ExternalLink href={GH_SOURCE}>source available</ExternalLink>
+			</section>
+			<section>
+				<p>placeholder photograph provided under the unsplash license by</p>
+				<ExternalLink href={IMAGE_ATTRIBUTION}>Patrick Fore</ExternalLink>
+			</section>
 		</div>
 	);
 }
