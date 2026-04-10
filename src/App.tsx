@@ -2,15 +2,12 @@ import React, { useState, useEffect } from "react";
 import { FileSelector } from "./components/file-selector";
 import "./App.css";
 
-import {
-	makeImage,
-	drawImageCanvas,
-	convertCanvasToBlob,
-} from "./converters/image";
-import { downloadFile, getPublicResource } from "./utils";
+import { makeImage, drawImageCanvas } from "./converters/image";
+import { drawPagesToCanvas } from "./converters/pdf";
+import { downloadFile, getPublicResource, convertCanvasToBlob } from "./utils";
 import { Footer } from "./components/footer";
 
-const SUPPORTED_FORMATS = [
+const SUPPORTED_IMAGE_FORMATS = [
 	{ visual: "PNG", mime: "image/png", extension: "png" },
 	{ visual: "JPEG", mime: "image/jpeg", extension: "jpg" },
 	{ visual: "WEBP", mime: "image/webp", extension: "webp" },
@@ -18,7 +15,9 @@ const SUPPORTED_FORMATS = [
 
 function App() {
 	const [file, setFile] = useState<Blob | null>(null);
-	const [selectedFormat, setSelectedFormat] = useState(SUPPORTED_FORMATS[0]);
+	const [selectedFormat, setSelectedFormat] = useState(
+		SUPPORTED_IMAGE_FORMATS[0],
+	);
 	const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
 
 	const tryConvert = async () => {
@@ -40,18 +39,30 @@ function App() {
 
 		setFile(selectedFile);
 
-		try {
-			const img = await makeImage(selectedFile);
+		if (SUPPORTED_IMAGE_FORMATS.some((f) => f.mime === selectedFile.type)) {
+			try {
+				const img = await makeImage(selectedFile);
 
+				const canvas = canvasRef.current;
+				if (!canvas) return;
+
+				canvas.width = img.naturalWidth;
+				canvas.height = img.naturalHeight;
+
+				drawImageCanvas(img, selectedFormat.mime, canvasRef.current);
+			} catch (err) {
+				console.error("Failed to process image:", err);
+			}
+		} else if (selectedFile.type === "application/pdf") {
 			const canvas = canvasRef.current;
+
 			if (!canvas) return;
 
-			canvas.width = img.naturalWidth;
-			canvas.height = img.naturalHeight;
-
-			drawImageCanvas(img, selectedFormat.mime, canvasRef.current);
-		} catch (err) {
-			console.error("Failed to process image:", err);
+			try {
+				await drawPagesToCanvas(selectedFile, canvas);
+			} catch (err) {
+				console.error("Failed to process PDF:", err);
+			}
 		}
 	};
 
@@ -64,7 +75,7 @@ function App() {
 
 			await drawImageCanvas(
 				placeholderImage,
-				SUPPORTED_FORMATS[0].mime, // Placeholder is a PNG
+				SUPPORTED_IMAGE_FORMATS[0].mime, // Placeholder is a PNG
 				canvasRef.current as HTMLCanvasElement,
 			);
 		};
@@ -81,17 +92,19 @@ function App() {
 				</p>
 				<div className="panel">
 					<FileSelector
-						accept="image/*"
+						accept="image/* application/pdf"
 						handleFileChange={handleFileChange}
 						className="btn btn-secondary"
 					/>
 					<select
 						onChange={(e) =>
-							setSelectedFormat(SUPPORTED_FORMATS[parseInt(e.target.value)])
+							setSelectedFormat(
+								SUPPORTED_IMAGE_FORMATS[parseInt(e.target.value)],
+							)
 						}
 						className="select-input"
 					>
-						{SUPPORTED_FORMATS.map((format, index) => (
+						{SUPPORTED_IMAGE_FORMATS.map((format, index) => (
 							<option key={format.extension} value={index}>
 								{format.visual}
 							</option>

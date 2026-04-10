@@ -14,3 +14,23 @@ export const downloadFile = (url: string, fileName: string) => {
 	link.click();
 	document.body.removeChild(link);
 };
+
+export const convertCanvasToBlob = (
+	canvas: HTMLCanvasElement,
+	targetMime: string,
+): Promise<string> => {
+	return new Promise((resolve, reject) => {
+		canvas.toBlob(
+			(blob) => {
+				if (!blob) {
+					reject(new Error("Blob creation failed"));
+					return;
+				}
+
+				resolve(URL.createObjectURL(blob));
+			},
+			targetMime,
+			1,
+		);
+	});
+};
