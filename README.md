@@ -3,6 +3,8 @@
 loconv is a lightweight local image converter that doesn't upload your data to any external servers
 built using bun, vite, typescript and react
 
+this project is viewable on cloudflare pages [here](https://loconv.pages.dev/)
+
 ## building/running loconv
 
 ### requirements
@@ -31,6 +33,7 @@ bun run build
 - frontend: react
 - runtime: bun
 - bundler: vite
+- formater: biome
 
 ## license
 
