@@ -4,7 +4,9 @@ import { execSync } from 'child_process';
 
 const getCommitHash = () => {
   if (process.env.CF_PAGES_COMMIT_SHA) {
-    return process.env.CF_PAGES_COMMIT_SHA;
+    // Cloudflare pages provides the entire commit hash, this shortens it
+    // to the length returned by the method below
+    return process.env.CF_PAGES_COMMIT_SHA.substring(0, 7);
   };
 
   try {
