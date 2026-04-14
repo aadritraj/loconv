@@ -7,9 +7,10 @@ const IMAGE_ATTRIBUTION = "https://unsplash.com/@patrickian4";
 export function Footer() {
 	return (
 		<div className="footer">
-			<b>
+			<section>
 				<h2>loconv</h2>
-			</b>
+				<p className="text-light text-small">{__COMMIT_HASH__}</p>
+			</section>
 			<section>
 				<p>distributed under the MIT license</p>
 				<ExternalLink href={GH_SOURCE}>source available</ExternalLink>
