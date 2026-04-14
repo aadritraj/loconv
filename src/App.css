@@ -10,6 +10,20 @@
 	--color-subtext: #bac2de;
 }
 
+@media (prefers-color-scheme: light) {
+    :root {
+		/* Light colours (Catpuccin Mocha) */
+        --base-bg-color: #eff1f5;
+        --secondary-bg-color: #e6e9ef;
+		--secondary-bg-color-dimmed: #dce0e8;
+		--surface-color: #acb0be;
+		--surface-color-dimmed: #45475a;
+		--color-blue: #1e66f5;
+		--color-text: #4c4f69;
+		--color-subtext: #5c5f77;  
+    }
+}
+
 * {
 	box-sizing: border-box;
 	margin: 0;
