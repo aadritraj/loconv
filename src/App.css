@@ -1,190 +1,190 @@
 :root {
-	/* Base colours (Catpuccin Mocha)*/
-	--base-bg-color: #1e1e2e;
-	--secondary-bg-color: #181825;
-	--secondary-bg-color-dimmed: #11111b;
-	--surface-color: #585b70;
-	--surface-color-dimmed: #45475a;
-	--color-blue: #89b4fa;
-	--color-text: #cdd6f4;
-	--color-subtext: #bac2de;
+  /* Base colours (Catpuccin Mocha)*/
+  --base-bg-color: #1e1e2e;
+  --secondary-bg-color: #181825;
+  --secondary-bg-color-dimmed: #11111b;
+  --surface-color: #585b70;
+  --surface-color-dimmed: #45475a;
+  --color-blue: #89b4fa;
+  --color-text: #cdd6f4;
+  --color-subtext: #bac2de;
 }
 
 @media (prefers-color-scheme: light) {
-	:root {
-		/* Light colours (Catpuccin Mocha) */
-		--base-bg-color: #eff1f5;
-		--secondary-bg-color: #e6e9ef;
-		--secondary-bg-color-dimmed: #dce0e8;
-		--surface-color: #acb0be;
-		--surface-color-dimmed: #45475a;
-		--color-blue: #1e66f5;
-		--color-text: #4c4f69;
-		--color-subtext: #5c5f77;
-	}
+  :root {
+    /* Light colours (Catpuccin Mocha) */
+    --base-bg-color: #eff1f5;
+    --secondary-bg-color: #e6e9ef;
+    --secondary-bg-color-dimmed: #dce0e8;
+    --surface-color: #acb0be;
+    --surface-color-dimmed: #45475a;
+    --color-blue: #1e66f5;
+    --color-text: #4c4f69;
+    --color-subtext: #5c5f77;
+  }
 }
 
 * {
-	box-sizing: border-box;
-	margin: 0;
-	padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 #root {
-	display: block;
+  display: block;
 }
 
 body {
-	background-color: var(--base-bg-color);
-	color: var(--color-text);
-	font-family: "Inter", sans-serif;
-	margin: 0;
-	min-height: 100dvh;
+  background-color: var(--base-bg-color);
+  color: var(--color-text);
+  font-family: "Inter", sans-serif;
+  margin: 0;
+  min-height: 100dvh;
 }
 
 .app {
-	display: flex;
-	flex-direction: column;
-	width: 100%;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
 .container {
-	display: flex;
-	gap: 1rem;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 
-	min-height: 100dvh;
-	width: 100%;
-	padding: 2rem;
+  min-height: 100dvh;
+  width: 100%;
+  padding: 2rem;
 }
 
 .panel {
-	background-color: var(--secondary-bg-color);
-	border-radius: 10px;
-	padding: 1rem;
-	width: 100%;
-	max-width: 600px;
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	justify-content: center;
-	gap: 1rem;
+  background-color: var(--secondary-bg-color);
+  border-radius: 10px;
+  padding: 1rem;
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
 }
 
 .footer {
-	background-color: var(--secondary-bg-color-dimmed);
-	border-top: 1px solid var(--surface-color);
-	width: 100%;
-	padding: 2rem 1rem;
+  background-color: var(--secondary-bg-color-dimmed);
+  border-top: 1px solid var(--surface-color);
+  width: 100%;
+  padding: 2rem 1rem;
 
-	display: flex;
-	flex-direction: column;
-	gap: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .link {
-	color: var(--color-blue);
-	text-decoration: none;
+  color: var(--color-blue);
+  text-decoration: none;
 }
 
 .link:hover {
-	text-decoration: underline;
+  text-decoration: underline;
 }
 
 .canvas {
-	background-color: var(--secondary-bg-color);
-	border: 1px solid var(--surface-color);
-	border-radius: 10px;
-	flex-shrink: 0;
-	padding: 1rem;
+  background-color: var(--secondary-bg-color);
+  border: 1px solid var(--surface-color);
+  border-radius: 10px;
+  flex-shrink: 0;
+  padding: 1rem;
 
-	display: block;
-	margin: 0 auto;
-	max-width: 80vw;
-	max-height: 60vh;
-	aspect-ratio: 1 / 1;
-	object-fit: contain;
+  display: block;
+  margin: 0 auto;
+  max-width: 80vw;
+  max-height: 60vh;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
 }
 
 .btn {
-	padding: 0.6rem 1.2rem;
-	border: none;
-	border-radius: 5px;
-	font-weight: 600;
-	cursor: pointer;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 5px;
+  font-weight: 600;
+  cursor: pointer;
 }
 
 .btn:active {
-	transform: scale(0.95);
+  transform: scale(0.95);
 }
 
 .btn-primary {
-	background-color: var(--color-blue);
-	color: var(--base-bg-color);
-	border: 1px solid var(--surface-color);
-	border-radius: 6px;
+  background-color: var(--color-blue);
+  color: var(--base-bg-color);
+  border: 1px solid var(--surface-color);
+  border-radius: 6px;
 }
 
 .btn-secondary {
-	background-color: var(--secondary-bg-color-dimmed);
-	color: var(--color-text);
-	border: 1px solid var(--surface-color);
-	border-radius: 6px;
+  background-color: var(--secondary-bg-color-dimmed);
+  color: var(--color-text);
+  border: 1px solid var(--surface-color);
+  border-radius: 6px;
 }
 
 .btn-secondary:hover {
-	border-color: var(--color-blue);
+  border-color: var(--color-blue);
 }
 
 .select-input {
-	appearance: none;
-	-webkit-appearance: none;
-	-moz-appearance: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
 
-	padding: 0.6rem 1.2rem;
-	font-family: inherit;
-	font-size: 0.9rem;
-	cursor: pointer;
+  padding: 0.6rem 1.2rem;
+  font-family: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
 
-	background-color: var(--secondary-bg-color-dimmed);
-	color: var(--color-text);
-	border: 1px solid var(--surface-color);
+  background-color: var(--secondary-bg-color-dimmed);
+  color: var(--color-text);
+  border: 1px solid var(--surface-color);
 
-	border-radius: 6px;
-	background-image: url("./assets/chevron-down.svg");
-	background-repeat: no-repeat;
-	background-position: right 0.7rem center;
-	background-size: 1rem;
+  border-radius: 6px;
+  background-image: url("./assets/chevron-down.svg");
+  background-repeat: no-repeat;
+  background-position: right 0.7rem center;
+  background-size: 1rem;
 }
 
 .select-input:hover {
-	border-color: var(--color-blue);
+  border-color: var(--color-blue);
 }
 
 .select-input:focus {
-	outline: none;
-	border-color: var(--color-blue);
+  outline: none;
+  border-color: var(--color-blue);
 }
 
 .select-input option {
-	background-color: var(--secondary-bg-color);
-	color: var(--color-text);
+  background-color: var(--secondary-bg-color);
+  color: var(--color-text);
 }
 
 .text-small {
-	font-size: 0.8rem;
+  font-size: 0.8rem;
 }
 
 .text-light {
-	color: var(--color--subtext);
+  color: var(--color--subtext);
 }
 
 .hidden {
-	display: none;
+  display: none;
 }
 
 .text-center {
-	text-align: center;
+  text-align: center;
 }
